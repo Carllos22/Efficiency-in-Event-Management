@@ -15,9 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val itemList = mutableListOf<String>()
-    private val adapter = ItemAdapter(itemList) { item ->
-        startEditItemActivity(item)
-    }
+    private lateinit var adapter: ItemAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +24,16 @@ class MainActivity : AppCompatActivity() {
 
         // Configuración del RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
+
+        // Creación del adaptador con la función lambda para eliminar un elemento
+        adapter = ItemAdapter(itemList,
+            onItemClick = { item ->
+                startEditItemActivity(item)
+            },
+            onDeleteClick = { position ->
+                deleteItem(position)
+            }
+        )
         binding.recyclerView.adapter = adapter
 
         // Listener para el botón de añadir elemento
@@ -102,6 +110,12 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, EditItemActivity::class.java)
         intent.putExtra("ITEM_NAME", item)
         startActivityForResult(intent, REQUEST_CODE_EDIT)
+    }
+
+    private fun deleteItem(position: Int){
+        itemList.removeAt(position)
+        adapter.notifyItemRemoved(position)
+        Toast.makeText(this,"Item deleted", Toast.LENGTH_SHORT).show()
     }
 
     companion object {

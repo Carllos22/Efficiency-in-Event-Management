@@ -7,7 +7,8 @@
 
     class ItemAdapter(
         private val itemList: List<String>,
-        private val onItemClick: (String) -> Unit
+        private val onItemClick: (String) -> Unit,
+        private val onDeleteClick: (Int) -> Unit
     ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -19,13 +20,16 @@
             val item = itemList[position]
             holder.bind(item)
             holder.itemView.setOnClickListener { onItemClick(item) }
+            holder.binding.deleteButton.setOnClickListener {
+                onDeleteClick(position)
+            }
         }
 
         override fun getItemCount(): Int {
             return itemList.size
         }
 
-        inner class ItemViewHolder(private val binding: ActivityItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+        inner class ItemViewHolder(val binding: ActivityItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
 
             fun bind(item: String) {
                 binding.tvItemName.text = item
