@@ -20,5 +20,5 @@
         android:text="Update"
         android:textSize="22dp"
         android:textColor="@color/black"
-        android:backgroundTint="@color/red"/>
+        android:backgroundTint="@color/blue"/>
 </LinearLayout>
