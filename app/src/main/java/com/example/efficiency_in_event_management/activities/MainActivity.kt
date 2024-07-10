@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.efficiency_in_event_management.R
@@ -16,6 +18,24 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val itemList = mutableListOf<String>()
     private lateinit var adapter: ItemAdapter
+
+    private val createItemLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val data: Intent? = result.data
+            handleCreateItemResult(data)
+        }
+    }
+
+    private val editItemLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val data: Intent? = result.data
+            handleEditItemResult(data)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,23 +84,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Método para manejar el resultado de la actividad de creación o edición de elementos
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            when (requestCode) {
-                REQUEST_CODE_CREATE -> handleCreateItemResult(data)
-                REQUEST_CODE_EDIT -> handleEditItemResult(data)
-            }
-        }
-    }
-
     // Método para manejar el resultado de la creación de un nuevo elemento
     private fun handleCreateItemResult(data: Intent?) {
         val newItem = data?.getStringExtra("NEW_ITEM")
         newItem?.let {
+            val position = itemList.size
             itemList.add(it)
-            adapter.notifyDataSetChanged()
+            adapter.notifyItemInserted(position)
             Toast.makeText(this, "New item added", Toast.LENGTH_SHORT).show()
         }
     }
@@ -102,24 +112,20 @@ class MainActivity : AppCompatActivity() {
     // Método para iniciar la actividad de creación de un nuevo elemento
     private fun startCreateItemActivity() {
         val intent = Intent(this, CreateItemActivity::class.java)
-        startActivityForResult(intent, REQUEST_CODE_CREATE)
+        createItemLauncher.launch(intent)
     }
 
     // Método para iniciar la actividad de edición de un elemento existente
     private fun startEditItemActivity(item: String) {
         val intent = Intent(this, EditItemActivity::class.java)
         intent.putExtra("ITEM_NAME", item)
-        startActivityForResult(intent, REQUEST_CODE_EDIT)
+        editItemLauncher.launch(intent)
     }
 
-    private fun deleteItem(position: Int){
+    // Método para eliminar un elemento de la lista
+    private fun deleteItem(position: Int) {
         itemList.removeAt(position)
         adapter.notifyItemRemoved(position)
-        Toast.makeText(this,"Item deleted", Toast.LENGTH_SHORT).show()
-    }
-
-    companion object {
-        const val REQUEST_CODE_CREATE = 1
-        const val REQUEST_CODE_EDIT = 2
+        Toast.makeText(this, "Item deleted", Toast.LENGTH_SHORT).show()
     }
 }
