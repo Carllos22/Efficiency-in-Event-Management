@@ -17,10 +17,10 @@ class EditItemActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         originalItem = intent.getStringExtra("ITEM_NAME")
-        binding.etEditItem.setText(originalItem)
+        binding.etEditItem.editText?.setText(originalItem)
 
         binding.btnUpdate.setOnClickListener {
-            val updatedItemName = binding.etEditItem.text.toString()
+            val updatedItemName = binding.etEditItem.editText?.text.toString()
             val resultIntent = Intent()
             resultIntent.putExtra("UPDATED_ITEM", updatedItemName)
             resultIntent.putExtra("ITEM_NAME", originalItem)

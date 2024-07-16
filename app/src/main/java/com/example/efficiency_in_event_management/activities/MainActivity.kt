@@ -42,12 +42,11 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        loadItems()
-
         setupRecyclerView()
         setupAddItemButton()
 
-        // Initialize ActivityResultLaunchers
+        loadItems()
+
         createItemLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 val data = result.data
@@ -120,9 +119,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupAddItemButton() {
-        binding.textInputLayout.setOnClickListener {
+        /*binding.textInputLayout.setOnClickListener {
             startCreateItemActivity()
-        }
+        }*/
     }
 
     private fun logout() {

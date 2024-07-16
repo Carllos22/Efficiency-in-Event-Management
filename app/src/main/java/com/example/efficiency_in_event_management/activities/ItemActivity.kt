@@ -17,12 +17,16 @@ class CreateItemActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnSave.setOnClickListener {
-            val newItem = binding.etNewItem.text.toString()
-            val resultIntent = Intent()
-            resultIntent.putExtra("NEW_ITEM", newItem)
-            setResult(Activity.RESULT_OK, resultIntent)
-            finish()
-            Toast.makeText(this, "Saved element", Toast.LENGTH_SHORT).show()
+            val newItem = binding.etNewItem.editText?.text.toString()
+            if (newItem.isNotEmpty()) {
+                val resultIntent = Intent()
+                resultIntent.putExtra("NEW_ITEM", newItem)
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish()
+                Toast.makeText(this, "Saved element", Toast.LENGTH_SHORT).show()
+            } else {
+                binding.etNewItem.error = "Task cannot be empty"
+            }
         }
     }
 }

@@ -7,11 +7,19 @@
     android:padding="16dp"
     android:gravity="center">
 
-    <EditText
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/etEditItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Edit item" />
+        android:hint="Edit item"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnUpdate"
