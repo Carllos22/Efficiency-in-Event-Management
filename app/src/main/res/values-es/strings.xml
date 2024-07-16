@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Eficiencia en la Gestión de eventos</string>
+    <string name="add_item">Añadir elemento</string>
+    <string name="settings">Configuración</string>
+</resources>

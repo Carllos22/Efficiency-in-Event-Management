@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupAddItemButton() {
-        binding.btnAddItem.setOnClickListener {
+        binding.textInputLayout.setOnClickListener {
             startCreateItemActivity()
         }
     }
